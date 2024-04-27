@@ -1,0 +1,54 @@
+.POSIX:
+.SUFFIXES:
+.SUFFIXES: .c .o .uto .coverage
+
+BINDIR     = @BINDIR@
+CC         = @CC@
+CCOV       = gcov
+CFLAGS     = @CFLAGS@
+CFLAGS_COV = @CFLAGS_COV@
+CFLAGS_SAN = @CFLAGS_SAN@
+
+.PHONY: all
+all: parser.coverage
+all: unit.coverage
+all: unico
+
+parser.coverage: test_parser.uto label.uto unit.uto
+unit.coverage: test_unit.uto
+
+unit.c: unit.head.c unit.body.c
+	( cat unit.head.c ; cc -E unit.body.c |grep -ve "^#" ) > $@
+
+.c.o:
+	$(CC) $(CFLAGS) -c $^ -o $@
+
+.c.uto:
+	$(CC) $(CFLAGS) $(CFLAGS_COV) $(CFLAGS_SAN) -c $< -o $@
+
+.c.coverage:
+	$(CC) $(CFLAGS) $(CFLAGS_COV) $(CFLAGS_SAN) -c $< -o $$(basename $< .c).uto
+	$(CC) $(CFLAGS) $(CFLAGS_COV) $(CFLAGS_SAN) $$(echo $^ | sed -E -e 's/(^| )$</'$$(basename $< .c).uto'/g') -o $@ -lm
+	./$@
+	$(CCOV) $<
+	! grep "#####" $<.gcov
+
+unico: unico.o label.o parser.o unit.o
+	$(CC) $(CFLAGS) $^ -o $@ -lm
+
+.PHONY: install
+install: unico
+	mkdir -p $(BINDIR)
+	install -m 755 unico $(BINDIR)/unico
+
+.PHONY: uninstall
+uninstall:
+	rm -f ${BINDIR}/unico
+
+.PHONY: clean
+clean:
+	rm -rf unit.c *.o *.uto *.gc?? *.coverage unico
+
+.PHONY: distclean
+distclean: clean
+	rm -f Makefile config.status

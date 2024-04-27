@@ -1,0 +1,113 @@
+#ifndef b
+/// Base unit.
+#define b(symbol, name)
+#endif
+#ifndef s
+/// Section
+#define s(name)
+#endif
+#ifndef u
+/// Unit scaled from a base unit.
+#define u(symbol, name, base, scale)
+#endif
+#ifndef c
+/// Unit with custom relationship to base unit.
+#define c(symbol, name, base, tobase, frombase) u(symbol, name, base, error)
+#endif
+
+// https://en.wikipedia.org/wiki/International_System_of_Units
+// https://en.wikipedia.org/wiki/SI_derived_unit
+// https://en.wikipedia.org/wiki/Coherence_(units_of_measurement)
+
+b(L"m",        BaseUnitMetre)
+b(L"m^2",      BaseUnitSquareMetre)
+b(L"m^3",      BaseUnitCubicMetre)
+b(L"kg",       BaseUnitKilogram)
+b(L"K",        BaseUnitKelvin)
+b(L"Pa",       DerivedUnitPressurePascal)
+b(L"rad",      DerivedUnitAngleRadian)
+
+s(L"Length")
+// https://en.wikipedia.org/wiki/Metre
+u(L"mm",       PresentationUnitMillimetre,         BaseUnitMetre,              0.001)
+u(L"cm",       PresentationUnitCentimetre,         BaseUnitMetre,              0.01)
+u(L"m",        PresentationUnitMetre,              BaseUnitMetre,              1)
+u(L"km",       PresentationUnitKilometre,          BaseUnitMetre,              1000)
+// Non-SI.
+u(L"mi",       PresentationUnitMile,               BaseUnitMetre,              1609.344)
+u(L"yd",       PresentationUnitYard,               BaseUnitMetre,              0.9144)
+u(L"ft",       PresentationUnitFeet,               BaseUnitMetre,              0.3048)
+u(L"'\"",      PresentationUnitFeetAndInches,      BaseUnitMetre,              0.3048)
+u(L"in",       PresentationUnitInch,               BaseUnitMetre,              0.0254)
+
+s(L"Area")
+// https://en.wikipedia.org/wiki/Square_metre
+u(L"m^2",      PresentationUnitSquareMetre,        BaseUnitSquareMetre,        1)
+// Hectare is accepted for use with the SI.
+u(L"ha",       PresentationUnitHectare,            BaseUnitSquareMetre,        10000)
+// Non-SI.
+u(L"acre",     PresentationUnitAcre,               BaseUnitSquareMetre,        4046.8564224)
+u(L"ft^2",     PresentationUnitSquareFoot,         BaseUnitSquareMetre,        0.09290304)
+
+s(L"Volume")
+// https://en.wikipedia.org/wiki/Cubic_metre
+u(L"m^3",      PresentationUnitCubicMetre,         BaseUnitCubicMetre,         1)
+u(L"cm^3",     PresentationUnitCubicCentimetre,    BaseUnitCubicMetre,         0.000001)
+// Litre is accepted for use with the SI.
+u(L"mL",       PresentationUnitMillilitre,         BaseUnitCubicMetre,         0.000001)
+u(L"cL",       PresentationUnitCentilitre,         BaseUnitCubicMetre,         0.00001)
+u(L"dL",       PresentationUnitDecilitre,          BaseUnitCubicMetre,         0.0001)
+u(L"L",        PresentationUnitLitre,              BaseUnitCubicMetre,         0.001)
+u(L"ml",       PresentationUnitMillilitreAlt,      BaseUnitCubicMetre,         0.000001)
+u(L"cl",       PresentationUnitCentilitreAlt,      BaseUnitCubicMetre,         0.00001)
+u(L"dl",       PresentationUnitDecilitreAlt,       BaseUnitCubicMetre,         0.0001)
+u(L"l",        PresentationUnitLitreAlt,           BaseUnitCubicMetre,         0.001)
+// Non-SI.
+u(L"pt",       PresentationUnitPint,               BaseUnitCubicMetre,         0.00056826125)
+u(L"US pt",    PresentationUnitPintUS,             BaseUnitCubicMetre,         0.000473176473)
+u(L"ft^3",     PresentationUnitCubicFoot,          BaseUnitCubicMetre,         0.028316846592)
+u(L"in^3",     PresentationUnitCubicInch,          BaseUnitCubicMetre,         1.6387064069264E-5)
+
+s(L"Mass")
+// https://en.wikipedia.org/wiki/Kilogram
+u(L"mg",       PresentationUnitMilligram,          BaseUnitKilogram,           0.000001)
+u(L"g",        PresentationUnitGram,               BaseUnitKilogram,           0.001)
+u(L"kg",       PresentationUnitKilogram,           BaseUnitKilogram,           1)
+u(L"Mg",       PresentationUnitMegagram,           BaseUnitKilogram,           1000)
+// Tonne is accepted for use with the SI.
+u(L"t",        PresentationUnitTonne,              BaseUnitKilogram,           1000)
+// Non-SI.
+u(L"tn",       PresentationUnitShortTon,           BaseUnitKilogram,           907.1847)
+u(L"long ton", PresentationUnitLongTon,            BaseUnitKilogram,           1016.047)
+u(L"lb",       PresentationUnitPound,              BaseUnitKilogram,           0.45359237)
+u(L"oz",       PresentationUnitOunce,              BaseUnitKilogram,           0.02834952)
+
+s(L"Thermodynamic temperature")
+// https://en.wikipedia.org/wiki/Kelvin
+u(L"K",        PresentationUnitKelvin,             BaseUnitKelvin,             1)
+c(L"°C",       PresentationUnitDegreesCelsius,     BaseUnitKelvin,             X + 273.15,                        X - 273.15)
+// Non-SI.
+c(L"°F",       PresentationUnitDegreesFahrenheit,  BaseUnitKelvin,             ((X - 32) / 1.79999999) + 273.15,  ((X - 273.15) * 1.8) + 32)
+
+s(L"Pressure")
+// https://en.wikipedia.org/wiki/Pascal_(unit)
+u(L"Pa",       PresentationUnitPascal,             DerivedUnitPressurePascal,  1)
+u(L"hPa",      PresentationUnitHectoPascal,        DerivedUnitPressurePascal,  100)
+u(L"kPa",      PresentationUnitKiloPascal,         DerivedUnitPressurePascal,  1000)
+// Non-SI.
+u(L"mbar",     PresentationUnitMillibar,           DerivedUnitPressurePascal,  100)
+u(L"bar",      PresentationUnitBar,                DerivedUnitPressurePascal,  100000)
+u(L"psi",      PresentationUnitPoundPerSquareInch, DerivedUnitPressurePascal,  6894.757293168)
+u(L"mmHg",     PresentationUnitMillimetreMercury,  DerivedUnitPressurePascal,  133.322387415)
+u(L"inHg",     PresentationUnitInchesMercury,      DerivedUnitPressurePascal,  3386.3886666667)
+
+s(L"Plane angle")
+// https://en.wikipedia.org/wiki/Radian
+u(L"rad",      PresentationUnitRadian,             DerivedUnitAngleRadian,     1)
+// Degree is accepted for use with the SI.
+u(L"°",        PresentationUnitDegree,             DerivedUnitAngleRadian,     M_PI / 180)
+
+#undef b
+#undef s
+#undef u
+#undef c
